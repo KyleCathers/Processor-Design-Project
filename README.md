@@ -18,6 +18,10 @@ program counter for the branch-to-subroutine (procedure) instruction. It is also
 for the load-immediate instruction. The memory address space is 216= 65,536 bytes and
 it is byte addressable.
 
+<p align="center">
+  <img width="660" height="708" src="https://raw.githubusercontent.com/KyleCathers/Processor-Design-Project/master/Instruction%20Set.png">
+</p>
+
 ### 1) A Format
 These instructions are 2-byte long. The Op-code is
 the 7 most significant bits i.e. bits 15 to 9 while the remaining 9 bits are divided into three
