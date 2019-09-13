@@ -1,4 +1,4 @@
-# Processor-Design-Project
+# Processor Design Project
 Computer architecture course lab based CPU design project in VHDL
 
 # Project Description
