@@ -1,20 +1,39 @@
-library IEEE;
-use IEEE.STD_LOGIC_1164.ALL;
-use IEEE.NUMERIC_STD.ALL;
+----------------------------------------------------------------------------------
+-- Company: 
+-- Engineer: 
+-- 
+-- Create Date:    21:58:47 03/04/2015 
+-- Design Name: 
+-- Module Name:    Display_Controller - Behavioral 
+-- Project Name: 
+-- Target Devices: 
+-- Tool versions: 
+-- Description: 
+--
+-- Dependencies: 
+--
+-- Revision: 
+-- Revision 0.01 - File Created
+-- Additional Comments: 
+--
+----------------------------------------------------------------------------------
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
 
 -- clk is the 50Mhz system clock FPGA pin B8
 -- reset is is FPGA pin B18
--- hex3, hex2,hex1 and hex0 are four bit arrays used to store hex display character
--- an (an0,an1, an2, an3) four bit array that connect to the display transistors
--- sseg 7bit array that stores the individual segments of the hex display
+--hex3, hex2,hex1 and hex0 are four bit arrays used to store hex display character
+--an (an0,an1, an2, an3) four bit array that connect to the display transistors
+--sseg 7bit array that stores the individual segments of the hex display
 -- refer to ucf file and Nexys2 manual
 
 entity display_controller is
 	port(
-		clk, reset: in STD_LOGIC;
-		hex3, hex2, hex1, hex0: in STD_LOGIC_VECTOR(3 downto 0);
-		an: out STD_LOGIC_VECTOR(3 downto 0);
-		sseg: out STD_LOGIC_VECTOR(6 downto 0)
+		clk, reset: in std_logic;
+		hex3, hex2, hex1, hex0: in std_logic_vector(3 downto 0);
+		an: out std_logic_vector(3 downto 0);
+		sseg: out std_logic_vector(6 downto 0)
 	);
 end display_controller;
 
@@ -22,6 +41,7 @@ end display_controller;
 -- its seven-segment decoder to display numbers on the anodes using cathodes. 
 
 architecture arch of display_controller is 
+	
 	-- each 7-seg led enabled (2^18/4)*25 ns (40 ms)
 	constant N: integer:=18;
 	
@@ -29,43 +49,21 @@ architecture arch of display_controller is
 	--q_reg and q_next are 18 bit arrays, in this application N=18
         --sel is a 2 bit array that selects the hex display
         --hex is a 4 bit array the contains the hex value to be displayed
-	signal q_reg, q_next: UNSIGNED(1 downto 0);
-	signal sel: STD_LOGIC_VECTOR(1 downto 0);
-	signal hex: STD_LOGIC_VECTOR(3 downto 0);
-	
-	signal clk_out: STD_LOGIC;
-	signal temp: STD_LOGIC;
-	signal count: integer range 0 to 124999 := 0;
-		
+
+	signal q_reg, q_next: unsigned(1 downto 0);
+	signal sel: std_logic_vector(1 downto 0);
+	signal hex: std_logic_vector(3 downto 0);
+
+
 begin
 
-    -- This process divides the clock down to 200Hz
-    -- the division down is based on the scale factor
-    -- obtained by: scale=fin/fout
-    --                   =50Mhz/200Hz
-    --                   =250000
-    divider: process(clk,reset) begin
-        if(reset = '1') then
-            temp <= '0';
-            count <= 0;
-        elsif rising_edge(clk) then
-            if (count = 124999) then
-                temp <= NOT(temp);
-                count <= 0;
-            else
-                count <= count + 1;
-            end if;
-        end if;
-    end process;
-    
-    clk_out <= temp;
-
 	-- This process controls the reset button of the clock.
-	process(clk_out, reset)
+
+	process(clk, reset)
 	begin
 		if reset='1' then                       --If button pressed all  bits in q_reg set to 0
 			q_reg <= (others=>'0');
-		elsif (clk_out'event and clk_out='1') then       --If clock is rising q_next assigned to q_reg
+		elsif (clk'event and clk='1') then       --If clock is rising q_next assigned to q_reg
 			q_reg <= q_next;
 		end if;
 	end process;
@@ -75,7 +73,7 @@ begin
 	
 	-- 2 MSBs of counter to control 4-to-1 multiplexing 
 	--assign bits17 and 16 to sel array
-    sel <= STD_LOGIC_VECTOR(q_reg);   
+        sel <= std_logic_vector(q_reg);   
 	
 	-- This is the 2:4 decoder, which converts a two-bit input into a four-bit input for the seven-segment decoder.
 	
@@ -100,6 +98,7 @@ begin
 			when others =>
 				an <= "0111";
 				hex <= hex3;
+				
 		end case;
 	end process;
 	
@@ -126,4 +125,7 @@ begin
 			"0100001" when "1101", -- D, which signifies "13"
 			"0000110" when "1110", -- E, which signifies "14"
 			"0001110" when others;  -- F, which signifies "15"
+			
+
 end arch;
+				

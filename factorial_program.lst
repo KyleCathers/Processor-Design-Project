@@ -1,0 +1,56 @@
+
+;
+; Created on Wed Apr 03 12:52:15 2019 with ECE 449 assembler v1.10 Beta 4 (16 bit).
+;
+;Header Section
+RADIX 10
+DEPTH 2048
+WIDTH 16
+DEFAULT 0
+;
+; Data Section
+; Specifies data to be stored in different addresses
+; e.g., DATA 0:A, 1:0
+;
+RADIX 16
+DATA 
+1126 => "0010010111111111", -- 0466 - 25FF main:          LOADIMM.UPPER DipSwitches.hi
+1128 => "0010010011110000", -- 0468 - 24F0                LOADIMM.LOWER DipSwitches.lo
+1130 => "0010000110111000", -- 046A - 21B8                LOAD          r6,r7
+1132 => "0010010100000000", -- 046C - 2500                LOADIMM.UPPER DipSwitchMask.hi
+1134 => "0010010000000111", -- 046E - 2407                LOADIMM.LOWER DipSwitchMask.lo
+1136 => "0000100110110111", -- 0470 - 09B7                NAND          r6,r6,r7
+1138 => "0000100110110110", -- 0472 - 09B6                NAND          r6,r6,r6
+1140 => "0010010100000000", -- 0474 - 2500                LOADIMM.UPPER 0x00
+1142 => "0010010000000001", -- 0476 - 2401                LOADIMM.LOWER 0x01
+1144 => "0010011100111000", -- 0478 - 2738                MOV           r4,r7
+1146 => "0010011011111000", -- 047A - 26F8                MOV           r3,r7
+1148 => "0000111110000000", -- 047C - 0F80                TEST          r6
+1150 => "1000010000001101", -- 047E - 840D                BRR.Z         DONE
+1152 => "0000010110110011", -- 0480 - 05B3                SUB           r6,r6,r3
+1154 => "0000111110000000", -- 0482 - 0F80                TEST          r6
+1156 => "1000010000001010", -- 0484 - 840A                BRR.Z         DONE
+1158 => "0010010100000000", -- 0486 - 2500                LOADIMM.UPPER 0x00
+1160 => "0010010000000010", -- 0488 - 2402                LOADIMM.LOWER 0x02
+1162 => "0010011101111000", -- 048A - 2778                MOV           r5,r7
+1164 => "0000011100100101", -- 048C - 0725 LOOP:          MUL           r4,r4,r5
+1166 => "0000001101101011", -- 048E - 036B                ADD           r5,r5,r3
+1168 => "0000010110110011", -- 0490 - 05B3                SUB           r6,r6,r3
+1170 => "0000111110000000", -- 0492 - 0F80                TEST          r6
+1172 => "1000010000000010", -- 0494 - 8402                BRR.Z         DONE
+1174 => "1000000111111011", -- 0496 - 81FB                BRR           LOOP
+1176 => "0010010111111111", -- 0498 - 25FF DONE:          LOADIMM.UPPER LedDisplay.hi
+1178 => "0010010011110010", -- 049A - 24F2                LOADIMM.LOWER LedDisplay.lo
+1180 => "0010001111100000", -- 049C - 23E0                STORE         r7,r4
+1182 => "1000000111111101", -- 049E - 81FD                BRR           DONE
+
+
+-------------------------------------------------------
+Symbol Table:
+DONE             1176 (0498)
+DipSwitchMask       7 (0007)
+DipSwitches     65520 (FFF0)
+LOOP             1164 (048C)
+LedDisplay      65522 (FFF2)
+main             1126 (0466)
+
