@@ -1,6 +1,11 @@
 # Processor Design Project
 Computer architecture course lab based CPU design project in VHDL
 
+
+<p align="center">
+  <img width="700" height="402" src="https://raw.githubusercontent.com/KyleCathers/Processor-Design-Project/master/FPGA%20%26%20STM.png">
+</p>
+
 # Project Description
 Design and implement a 16-bit CPU
 
